@@ -25,7 +25,9 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/primeflex/primeflex.css",
+              "primeflex/themes/primeone-light.css"
             ]
           },
           "configurations": {
@@ -88,5 +90,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
