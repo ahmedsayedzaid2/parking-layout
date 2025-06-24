@@ -1,46 +1,91 @@
 <div class="flex gap-2 max-w-full h-full">
-  <div #workDev class="col-9 relative border-1 p-4 overflow-auto">
-    <div class="absolute top-2 left-2 bg-white bg-opacity-80 p-2 rounded shadow text-sm z-10">
-      <p>✋ Hold SPACE + Drag to pan</p>
-      <p>🖱️ Scroll to zoom | Ctrl+Scroll: horizontal zoom</p>
-      <p>🖱️ Double-click shape to edit</p>
+  <div #workDev class="col-9 relative border-1 p-4 overflow-auto bg-gray-50">
+    <div class="absolute top-2 left-2 bg-white bg-opacity-90 p-3 rounded-lg shadow-md text-sm z-10">
+      <p class="flex items-center gap-1"><span class="text-lg">✋</span> Hold SPACE + Drag to pan</p>
+      <p class="flex items-center gap-1 mt-1"><span class="text-lg">🔍</span> Scroll to zoom | Ctrl+Scroll: horizontal zoom</p>
+      <p class="flex items-center gap-1 mt-1"><span class="text-lg">✏️</span> Double-click shape to edit</p>
 
       <!-- Polygon creation instructions -->
       <div *ngIf="currentMode === 'add' && currentShapeType === 'polygon'"
-           class="mt-2 p-2 bg-yellow-100 rounded">
-        <p class="font-semibold">Creating Polygon</p>
-        <p>Click on the workspace to add points</p>
-        <p class="text-sm mt-1">Minimum 3 points required</p>
-        <div class="flex gap-2 mt-2">
-          <button (click)="finishPolygon()" class="btn btn-success flex-1">Finish Polygon</button>
-          <button (click)="cancelPolygon()" class="btn btn-danger flex-1">Cancel</button>
+           class="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <p class="font-semibold text-amber-800 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" style="max-width: 20px" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+          Creating Polygon
+        </p>
+        <p class="mt-2 text-gray-700">Click on the workspace to add points</p>
+        <p class="text-xs mt-1 text-amber-600">Minimum 3 points required</p>
+        <div class="flex gap-2 mt-3">
+          <button (click)="finishPolygon()" class="btn btn-success flex-1 flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" style="max-width: 20px"  fill="currentColor">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Finish
+          </button>
+          <button (click)="cancelPolygon()" class="btn btn-danger flex-1 flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" style="max-width: 20px" fill="currentColor">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+            Cancel
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-3 p-4 bg-gray-100">
-    <h4 class="mb-4">Parking Layout Workspace</h4>
+  <div class="col-3 p-5 bg-gray-50 border-l border-gray-200 shadow-inner">
+    <h4 class="mb-4 text-xl font-bold text-gray-800 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      Parking Layout Workspace
+    </h4>
 
-    <div class="mb-4">
-      <input (change)="getFile($event)" type="file" accept=".svg,.png,.jpg" class="mb-3 w-full">
+    <div class="mb-5">
+      <div class="mb-4 p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <label class="block mb-2 text-sm font-medium text-gray-700">Upload Background</label>
+        <div class="flex items-center gap-2">
+          <input (change)="getFile($event)" type="file" accept=".svg,.png,.jpg" class="flex-1 text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-lg file:border-0
+            file:text-sm file:font-medium
+            file:bg-blue-50 file:text-blue-700
+            hover:file:bg-blue-100">
+        </div>
+      </div>
 
-      <div class="grid grid-cols-3 gap-2 mb-2">
+      <div class="grid grid-cols-3 gap-2 mb-3">
         <button (click)="setShapeType('circle')"
-                [class]="'btn ' + (currentShapeType === 'circle' ? 'btn-primary' : 'btn-outline-primary')">
+                [class]="'btn flex flex-col items-center justify-center py-2 ' +
+                         (currentShapeType === 'circle' ? 'btn-primary' : 'btn-outline-primary')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
           Add Spot
         </button>
         <button (click)="setShapeType('rect')"
-                [class]="'btn ' + (currentShapeType === 'rect' ? 'btn-primary' : 'btn-outline-primary')">
+                [class]="'btn flex flex-col items-center justify-center py-2 ' +
+                         (currentShapeType === 'rect' ? 'btn-primary' : 'btn-outline-primary')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
           Add Area
         </button>
         <button (click)="setShapeType('polygon')"
-                [class]="'btn ' + (currentShapeType === 'polygon' ? 'btn-primary' : 'btn-outline-primary')">
-          Add Polygon
+                [class]="'btn flex flex-col items-center justify-center py-2 ' +
+                         (currentShapeType === 'polygon' ? 'btn-primary' : 'btn-outline-primary')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Polygon
         </button>
       </div>
 
-      <button (click)="startAddMode()" class="btn btn-primary w-full">
+      <button (click)="startAddMode()" class="btn btn-primary w-full py-2.5 flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="max-width: 20px">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
         Add {{
           currentShapeType === 'circle' ? 'Spot' :
             currentShapeType === 'rect' ? 'Area' : 'Polygon'
@@ -48,17 +93,23 @@
       </button>
     </div>
 
-    <div *ngIf="selectedShape" class="bg-blue-50 p-4 rounded mb-4">
-      <h5>Shape Metadata</h5>
-      <div class="space-y-3">
+    <div *ngIf="selectedShape" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-5">
+      <h5 class="font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Shape Metadata
+      </h5>
+      <div class="space-y-4">
         <div>
-          <label class="block mb-1">Identifier</label>
+          <label class="block mb-2 text-sm font-medium text-gray-700">Identifier</label>
           <input type="text" [(ngModel)]="metadataForm.spotNumber"
-                 placeholder="Spot number or area name" class="w-full p-2 border rounded">
+                 placeholder="Spot number or area name"
+                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
         </div>
         <div>
-          <label class="block mb-1">Type</label>
-          <select [(ngModel)]="metadataForm.type" class="w-full p-2 border rounded">
+          <label class="block mb-2 text-sm font-medium text-gray-700">Type</label>
+          <select [(ngModel)]="metadataForm.type" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
             <option value="standard">Standard</option>
             <option value="compact">Compact</option>
             <option value="handicap">Handicap</option>
@@ -69,43 +120,65 @@
         </div>
 
         <div *ngIf="metadataForm.shapeType === 'circle'">
-          <label class="flex items-center">
-            <input type="checkbox" [(ngModel)]="metadataForm.occupied" class="mr-2">
+          <label class="flex items-center text-sm text-gray-700">
+            <input type="checkbox" [(ngModel)]="metadataForm.occupied" class="mr-2 h-4 w-4 text-blue-600 rounded focus:ring-blue-500">
             Currently Occupied
           </label>
         </div>
 
         <!-- Dimension Controls -->
-        <div *ngIf="metadataForm.shapeType !== 'polygon'" class="grid grid-cols-2 gap-2">
+        <div *ngIf="metadataForm.shapeType !== 'polygon'" class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block mb-1">Width</label>
+            <label class="block mb-2 text-sm font-medium text-gray-700">Width</label>
             <input type="number" [(ngModel)]="metadataForm.width"
                    (change)="updateDimensions()" min="5"
-                   class="w-full p-2 border rounded">
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
           </div>
           <div>
-            <label class="block mb-1">Height</label>
+            <label class="block mb-2 text-sm font-medium text-gray-700">Height</label>
             <input *ngIf="metadataForm.shapeType === 'rect'"
                    type="number" [(ngModel)]="metadataForm.height"
                    (change)="updateDimensions()" min="5"
-                   class="w-full p-2 border rounded">
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
             <input *ngIf="metadataForm.shapeType === 'circle'"
                    type="number" [(ngModel)]="metadataForm.width"
                    (change)="updateDimensions()" min="5"
-                   class="w-full p-2 border rounded" disabled>
+                   class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-gray-100 cursor-not-allowed" disabled>
           </div>
         </div>
 
-        <div class="flex gap-2">
-          <button (click)="saveMetadata()" class="btn btn-primary flex-1">Save</button>
-          <button (click)="deleteSelected()" class="btn btn-danger flex-1">Delete</button>
+        <!-- Button grid -->
+        <div class="grid grid-cols-3 gap-2 pt-2">
+          <button (click)="saveMetadata()" class="btn btn-primary flex items-center justify-center gap-1" style="max-width: 20px">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Save
+          </button>
+          <button (click)="copySelected()" class="btn btn-secondary flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            Copy
+          </button>
+          <button (click)="deleteSelected()" class="btn btn-danger flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" style="max-width: 20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Delete
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="mt-4 p-4 bg-yellow-50 rounded">
-      <h5 class="font-bold">Polygon Creation Guide:</h5>
-      <ol class="list-decimal pl-5 space-y-2 mt-2">
+    <div class="mt-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+      <h5 class="font-bold text-amber-800 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" style="max-width: 20px" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+        </svg>
+        Polygon Creation Guide
+      </h5>
+      <ol class="list-decimal pl-5 space-y-2 mt-3 text-sm text-amber-700">
         <li>Click "Add Polygon"</li>
         <li>Click on the workspace to place points</li>
         <li>Drag points to adjust position</li>

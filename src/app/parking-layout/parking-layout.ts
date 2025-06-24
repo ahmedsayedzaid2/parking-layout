@@ -62,7 +62,7 @@ export class ParkingLayout implements AfterViewInit {
       rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
       rotationSnapTolerance: 10,
       enabledAnchors: ['top-left', 'top-center', 'top-right', 'middle-right',
-                       'bottom-right', 'bottom-center', 'bottom-left', 'middle-left'],
+        'bottom-right', 'bottom-center', 'bottom-left', 'middle-left'],
       boundBoxFunc: (oldBox, newBox) => {
         if (newBox.width < 5 || newBox.height < 5) {
           return oldBox;
@@ -312,6 +312,44 @@ export class ParkingLayout implements AfterViewInit {
     this.layer.draw();
   }
 
+  // COPY FUNCTIONALITY
+  copySelected() {
+    if (!this.selectedShape) return;
+
+    const clone = this.selectedShape.clone();
+    clone.x(clone.x() + 20);  // Offset for visibility
+    clone.y(clone.y() + 20);
+
+    // Reattach event handlers
+    clone.on('mouseenter', () => {
+      if (!this.spaceKeyPressed) {
+        document.body.style.cursor = 'move';
+        this.showTooltip(clone);
+      }
+    });
+
+    clone.on('mouseleave', () => {
+      document.body.style.cursor = 'default';
+      if (this.tooltip) this.tooltip.visible(false);
+      this.layer?.draw();
+    });
+
+    clone.on('dragmove', () => {
+      this.showTooltip(clone);
+    });
+
+    // Handle polygon clone separately
+    if (clone instanceof Konva.Line && clone.getAttr('metadata')?.shapeType === 'polygon') {
+      clone.closed(true);
+    }
+
+    this.layer?.add(clone);
+    this.parkingShapes.push(clone);
+    this.selectShape(clone);
+    this.currentMode = 'edit';
+    this.layer?.batchDraw();
+  }
+
   setShapeType(type: 'circle' | 'rect' | 'polygon') {
     this.currentShapeType = type;
     this.metadataForm.shapeType = type;
@@ -356,10 +394,11 @@ export class ParkingLayout implements AfterViewInit {
         shape = new Konva.Circle({
           x,
           y,
-          radius: this.metadataForm.width / 2,
+          width: this.metadataForm.width,
+          height: this.metadataForm.height,
           fill: fillColor,
-          stroke: 'black',
-          strokeWidth: 1,
+          stroke: 'blue',
+          strokeWidth: 2,
           name: 'parking-shape',
           draggable: true,
         });
@@ -640,7 +679,7 @@ export class ParkingLayout implements AfterViewInit {
       this.transformer.anchorSize(8);
       this.transformer.anchorCornerRadius(3);
       this.transformer.enabledAnchors(['top-left', 'top-center', 'top-right', 'middle-right',
-                                      'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
+        'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
     }
 
     // Special handling for polygons (Konva.Line)
@@ -656,7 +695,7 @@ export class ParkingLayout implements AfterViewInit {
       // For circles, we want all anchors to maintain the circle shape
       if (this.transformer) {
         this.transformer.enabledAnchors(['top-left', 'top-center', 'top-right', 'middle-right',
-                                        'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
+          'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
       }
     }
     // Special handling for rectangles
@@ -664,7 +703,7 @@ export class ParkingLayout implements AfterViewInit {
       // For rectangles, we want all anchors
       if (this.transformer) {
         this.transformer.enabledAnchors(['top-left', 'top-center', 'top-right', 'middle-right',
-                                        'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
+          'bottom-right', 'bottom-center', 'bottom-left', 'middle-left']);
       }
     }
 
@@ -737,7 +776,7 @@ export class ParkingLayout implements AfterViewInit {
 
       // Make sure the selected polygon is not draggable
       if (this.selectedShape instanceof Konva.Line &&
-          this.selectedShape.getAttr('metadata')?.shapeType === 'polygon') {
+        this.selectedShape.getAttr('metadata')?.shapeType === 'polygon') {
         this.selectedShape.draggable(false);
       }
 
@@ -894,14 +933,14 @@ export class ParkingLayout implements AfterViewInit {
 
         // Adjust for rotation
         const rotatedX = Math.cos(rotation) * (stagePoint.x - shape.x()) -
-                         Math.sin(rotation) * (stagePoint.y - shape.y()) + shape.x();
+          Math.sin(rotation) * (stagePoint.y - shape.y()) + shape.x();
         const rotatedY = Math.sin(rotation) * (stagePoint.x - shape.x()) +
-                         Math.cos(rotation) * (stagePoint.y - shape.y()) + shape.y();
+          Math.cos(rotation) * (stagePoint.y - shape.y()) + shape.y();
 
         if (rotatedX >= shape.x() - halfWidth &&
-            rotatedX <= shape.x() + halfWidth &&
-            rotatedY >= shape.y() - halfHeight &&
-            rotatedY <= shape.y() + halfHeight) {
+          rotatedX <= shape.x() + halfWidth &&
+          rotatedY >= shape.y() - halfHeight &&
+          rotatedY <= shape.y() + halfHeight) {
           shapes.push(shape);
         }
       }
@@ -935,7 +974,7 @@ export class ParkingLayout implements AfterViewInit {
       const yj = polygonPoints[j + 1];
 
       const intersect = ((yi > point.y) !== (yj > point.y)) &&
-                        (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
+        (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
       if (intersect) inside = !inside;
     }
     return inside;
